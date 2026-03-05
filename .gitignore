@@ -24,3 +24,4 @@ pdf/
 debug_renders/
 test_results.json
 debug_render.js
+.vercel
