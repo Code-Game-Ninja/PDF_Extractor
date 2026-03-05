@@ -1,7 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const FormData = require('form-data');
-const axios = require('axios');
 
 async function testUpload() {
   const pdfPath = path.join(__dirname, 'pdf', 'INSURANCE 4329.pdf');
@@ -11,24 +9,35 @@ async function testUpload() {
     return;
   }
 
-  const form = new FormData();
-  form.append('pdf', fs.createReadStream(pdfPath));
+  // Create native FormData object
+  const formData = new FormData();
+  
+  // Read file as Blob
+  const fileBuffer = fs.readFileSync(pdfPath);
+  const blob = new Blob([fileBuffer], { type: 'application/pdf' });
+  formData.append('pdf', blob, 'INSURANCE 4329.pdf');
 
-  console.log('Sending PDF to local server...');
+  console.log('Sending PDF to production server...');
   try {
-    const response = await axios.post('http://localhost:3000/api/upload', form, {
-      headers: { ...form.getHeaders() },
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity
+    const response = await fetch('https://pdf-text-extractor-alpha.vercel.app/api/upload', {
+      method: 'POST',
+      body: formData
     });
 
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error('API Error Response:', result);
+      return;
+    }
+
     console.log('\n--- SUCCESS ---');
-    console.log('Total Pages:', response.data.data.totalPages);
+    console.log('Total Pages:', result.data.totalPages);
     console.log('\n--- STRUCTURED DATA (GEMINI) ---');
-    console.log(JSON.stringify(response.data.data.structuredData, null, 2));
+    console.log(JSON.stringify(result.data.structuredData, null, 2));
 
   } catch (error) {
-    console.error('Error during upload:', error.response?.data || error.message);
+    console.error('Network or Parse Error:', error);
   }
 }
 

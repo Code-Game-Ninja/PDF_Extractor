@@ -152,13 +152,16 @@ router.post('/upload', (req, res, next) => {
 
       // ---- Process Extract with LLM (Structured Data) ----
       let structuredData = null;
-      if (extractionResults.combinedText) {
+      if (extractionResults.combinedText && extractionResults.combinedText.length > 50) {
         try {
-          console.log('[Upload] Sending text to Gemini for structured extraction...');
+          console.log(`[Upload] Sending ${extractionResults.combinedText.length} chars to Gemini for structured extraction...`);
           structuredData = await extractStructuredData(extractionResults.combinedText);
+          console.log('[Upload] Gemini extraction result:', structuredData ? 'Object received' : 'NULL received');
         } catch (llmErr) {
-          console.error('[Upload] LLM Extraction failed, continuing without structured data:', llmErr.message);
+          console.error('[Upload] LLM Extraction failed:', llmErr.message);
         }
+      } else {
+        console.warn('[Upload] Not enough text for Gemini extraction. Length:', extractionResults.combinedText?.length || 0);
       }
 
       // ---- Send Response ----
