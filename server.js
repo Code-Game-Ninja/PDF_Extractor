@@ -59,11 +59,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Ensure Required Directories Exist
 // ============================================
 
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log('[Server] Created uploads/ directory');
-}
+// (Directory creation handled by multer storage in routes/upload.js as needed)
 
 // ============================================
 // Routes
