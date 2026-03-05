@@ -61,16 +61,20 @@ async function extractStructuredData(documentText) {
   `;
 
   try {
-    console.log('[DataExtractor] Sending OCR text to Gemini for structured extraction...');
+    console.log(`[DataExtractor] Sending ${documentText.length} chars to Gemini for structured extraction...`);
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const jsonText = response.text();
+    
+    console.log('[DataExtractor] Gemini raw response length:', jsonText.length);
+    console.log('[DataExtractor] Gemini raw response start:', jsonText.substring(0, 100));
     
     // Parse the JSON string
     return JSON.parse(jsonText);
   } catch (error) {
     console.error('[DataExtractor] Failed to extract structured data via Gemini:', error.message);
-    throw new Error('LLM JSON Extraction failed: ' + error.message);
+    if (error.stack) console.error(error.stack);
+    return null; // Return null so the server doesn't crash but we know it failed
   }
 }
 

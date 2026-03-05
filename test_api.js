@@ -33,6 +33,9 @@ async function testUpload() {
 
     console.log('\n--- SUCCESS ---');
     console.log('Total Pages:', result.data.totalPages);
+    console.log('Combined Text Length:', result.data.combinedText?.length || 0);
+    console.log('Combined Text Sample:', result.data.combinedText?.substring(0, 500));
+    
     console.log('\n--- STRUCTURED DATA (GEMINI) ---');
     console.log(JSON.stringify(result.data.structuredData, null, 2));
 
