@@ -13,6 +13,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { extractFromPdf } = require('../utils/textExtractor');
+const { extractStructuredData } = require('../services/dataExtractor');
 
 const router = express.Router();
 
@@ -149,6 +150,17 @@ router.post('/upload', (req, res, next) => {
       console.log(`[Upload] Processing complete in ${processingTime}s`);
       console.log(`[Upload] Digital: ${extractionResults.digitalPages} pages | OCR: ${extractionResults.ocrPages} pages`);
 
+      // ---- Process Extract with LLM (Structured Data) ----
+      let structuredData = null;
+      if (extractionResults.combinedText) {
+        try {
+          console.log('[Upload] Sending text to Gemini for structured extraction...');
+          structuredData = await extractStructuredData(extractionResults.combinedText);
+        } catch (llmErr) {
+          console.error('[Upload] LLM Extraction failed, continuing without structured data:', llmErr.message);
+        }
+      }
+
       // ---- Send Response ----
       return res.status(200).json({
         success: true,
@@ -160,6 +172,7 @@ router.post('/upload', (req, res, next) => {
           failedPages: extractionResults.failedPages,
           digitalPages: extractionResults.digitalPages,
           ocrPages: extractionResults.ocrPages,
+          structuredData: structuredData,
           combinedText: extractionResults.combinedText,
           pages: extractionResults.pages,
           processingTime: `${processingTime}s`,
