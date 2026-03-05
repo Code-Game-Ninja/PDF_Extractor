@@ -1,9 +1,5 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// Ensure the API key is available
-const apiKey = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(apiKey);
-
 /**
  * Parses OCR-extracted raw text into a structured JSON payload for Insurance/Customer details.
  * Uses Google Gemini 1.5 Flash with strict JSON output forcing.
@@ -12,10 +8,13 @@ const genAI = new GoogleGenerativeAI(apiKey);
  * @returns {Promise<Object>} A parsed JSON object containing structured fields.
  */
 async function extractStructuredData(documentText) {
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     console.warn('[DataExtractor] GEMINI_API_KEY is not configured. Skipping structured extraction.');
     return null;
   }
+
+  const genAI = new GoogleGenerativeAI(apiKey);
 
   // Define the Gemini model configuration
   const model = genAI.getGenerativeModel({
