@@ -89,6 +89,12 @@ async function extractFromPdf(pdfPath, apiKey, options = {}) {
   // Step 2: Get per-page digital text using pdfjs directly
   // ============================================
   const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
+  
+  // FIX FOR VERCEL: Force bundler to include worker file
+  try {
+    require('pdfjs-dist/legacy/build/pdf.worker.js');
+  } catch (e) {}
+
   const { createCanvas } = require('canvas');
 
   class MinimalCanvasFactory {

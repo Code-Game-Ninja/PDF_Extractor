@@ -20,6 +20,15 @@ const { createCanvas } = require('canvas');
 // ============================================
 const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
 
+// 🔴 FIX FOR VERCEL SERVERLESS ENVIRONMENTS
+// pdfjs-dist dynamically requires its worker file, which Vercel's bundler ignores.
+// We statically require it here so Vercel includes it in the final deployment.
+try {
+  require('pdfjs-dist/legacy/build/pdf.worker.js');
+} catch (e) {
+  // Ignore any execution errors from the worker script itself
+}
+
 /**
  * Custom Canvas Factory for pdfjs-dist.
  * 
