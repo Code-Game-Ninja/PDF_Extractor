@@ -66,15 +66,16 @@ async function extractStructuredData(documentText) {
     const response = await result.response;
     const jsonText = response.text();
     
-    console.log('[DataExtractor] Gemini raw response length:', jsonText.length);
-    console.log('[DataExtractor] Gemini raw response start:', jsonText.substring(0, 100));
-    
     // Parse the JSON string
-    return JSON.parse(jsonText);
+    try {
+      return JSON.parse(jsonText);
+    } catch (parseErr) {
+      console.error('[DataExtractor] JSON Parse failed:', parseErr.message);
+      return { _error: 'Invalid JSON returned from Gemini', _rawResponse: jsonText.substring(0, 500) };
+    }
   } catch (error) {
-    console.error('[DataExtractor] Failed to extract structured data via Gemini:', error.message);
-    if (error.stack) console.error(error.stack);
-    return null; // Return null so the server doesn't crash but we know it failed
+    console.error('[DataExtractor] Gemini API Error:', error.message);
+    return { _error: 'Gemini API Error: ' + error.message };
   }
 }
 
