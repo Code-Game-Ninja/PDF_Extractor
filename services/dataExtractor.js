@@ -17,13 +17,14 @@ async function extractStructuredData(documentText) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // Configure model
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
-      generationConfig: { 
-        responseMimeType: 'application/json' 
-      }
-    });
+    // Configure model - Explicitly use v1beta for JSON response support
+    const model = genAI.getGenerativeModel(
+      { model: 'gemini-1.5-flash' },
+      { apiVersion: 'v1beta' }
+    );
+
+    // Update generation config for JSON
+    model.generationConfig = { responseMimeType: 'application/json' };
 
     const prompt = `
     You are an expert data extraction assistant for insurance policies and KYC documents.

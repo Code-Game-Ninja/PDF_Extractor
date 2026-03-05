@@ -213,7 +213,7 @@ router.get('/health', (req, res) => {
 
   res.json({
     status: 'ok',
-    version: '1.0.2',
+    version: '1.0.3',
     timestamp: new Date().toISOString(),
     visionApiKeyConfigured,
     geminiApiKeyConfigured,
