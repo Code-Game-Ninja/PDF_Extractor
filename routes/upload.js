@@ -205,12 +205,14 @@ router.post('/upload', (req, res, next) => {
  * and the API key is configured.
  */
 router.get('/health', (req, res) => {
-  const apiKeyConfigured = !!process.env.GOOGLE_CLOUD_VISION_API_KEY;
+  const visionApiKeyConfigured = !!process.env.GOOGLE_CLOUD_VISION_API_KEY;
+  const geminiApiKeyConfigured = !!process.env.GEMINI_API_KEY;
 
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    apiKeyConfigured,
+    visionApiKeyConfigured,
+    geminiApiKeyConfigured,
     maxFileSize: `${process.env.MAX_FILE_SIZE_MB || 20}MB`,
   });
 });
