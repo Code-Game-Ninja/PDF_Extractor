@@ -17,14 +17,14 @@ async function extractStructuredData(documentText) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // Configure model - Explicitly use v1beta for JSON response support
-    const model = genAI.getGenerativeModel(
-      { model: 'gemini-2.5-flash' },
-      { apiVersion: 'v1beta' }
-    );
-
-    // Update generation config for JSON
-    model.generationConfig = { responseMimeType: 'application/json' };
+    // Configure model with correct model name and JSON response
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash-latest',
+      generationConfig: {
+        responseMimeType: 'application/json',
+        temperature: 0.1, // Low temperature for more accurate extraction
+      }
+    });
 
     const prompt = `
     You are an expert data extraction assistant for insurance policies and KYC documents.
@@ -62,16 +62,61 @@ async function extractStructuredData(documentText) {
     `;
 
     console.log(`[DataExtractor] Sending ${documentText.length} chars to Gemini...`);
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const jsonText = response.text();
     
-    return JSON.parse(jsonText);
+    // Retry logic for transient failures
+    let lastError;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        
+        // Get text and parse JSON
+        let jsonText = response.text();
+        
+        // Sometimes Gemini wraps JSON in markdown code blocks, clean it
+        if (jsonText.includes('```json')) {
+          jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        } else if (jsonText.includes('```')) {
+          jsonText = jsonText.replace(/```\n?/g, '').trim();
+        }
+        
+        const parsed = JSON.parse(jsonText);
+        console.log('[DataExtractor] Successfully extracted structured data');
+        return parsed;
+      } catch (err) {
+        lastError = err;
+        console.warn(`[DataExtractor] Attempt ${attempt} failed: ${err.message}`);
+        if (attempt < 3) {
+          await new Promise(r => setTimeout(r, 1000 * attempt)); // Exponential backoff
+        }
+      }
+    }
+    
+    throw lastError;
   } catch (error) {
-    console.error('[DataExtractor] Gemini Error:', error.message);
+    console.error('[DataExtractor] Gemini Error after all retries:', error.message);
     return { 
       _error: error.message,
-      _type: 'GEMINI_ERROR'
+      _type: 'GEMINI_ERROR',
+      policyDetails: {
+        policyNumber: null,
+        policyType: null,
+        insurerName: null,
+        premium: null,
+        sumInsured: null,
+        startDate: null,
+        endDate: null,
+        paymentFrequency: null
+      },
+      customerDetails: {
+        customerName: null,
+        customerPhone: null,
+        customerEmail: null,
+        customerAddress: null,
+        customerCity: null,
+        customerState: null,
+        customerPincode: null
+      }
     };
   }
 }

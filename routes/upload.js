@@ -156,7 +156,19 @@ router.post('/upload', (req, res, next) => {
         try {
           console.log(`[Upload] Sending ${extractionResults.combinedText.length} chars to Gemini for structured extraction...`);
           structuredData = await extractStructuredData(extractionResults.combinedText);
-          console.log('[Upload] Gemini extraction result:', structuredData ? 'Object received' : 'NULL received');
+          
+          // Debug logging
+          if (structuredData) {
+            if (structuredData._error) {
+              console.error('[Upload] Gemini returned error:', structuredData._error);
+            } else {
+              console.log('[Upload] Gemini extraction SUCCESS');
+              console.log('[Upload] Policy Number:', structuredData.policyDetails?.policyNumber || 'null');
+              console.log('[Upload] Customer Name:', structuredData.customerDetails?.customerName || 'null');
+            }
+          } else {
+            console.warn('[Upload] Gemini returned NULL');
+          }
         } catch (llmErr) {
           console.error('[Upload] LLM Extraction failed:', llmErr.message);
         }
