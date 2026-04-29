@@ -126,18 +126,19 @@ app.listen(PORT, async () => {
   console.log('========================================\n');
   
   // Quick Gemini API test on startup
-  if (process.env.GEMINI_API_KEY) {
-    try {
-      const { GoogleGenerativeAI } = require('@google/generative-ai');
-      const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
-      const result = await model.generateContent('Hello - API test');
-      console.log('[Startup] ✓ Gemini API connection verified');
-    } catch (err) {
-      console.error('[Startup] ✗ Gemini API test failed:', err.message);
-      console.error('[Startup]   Check your GEMINI_API_KEY - it may be invalid or expired');
-    }
-  }
+  // Commented out due to model name issues - actual extraction will test at runtime
+  // if (process.env.GEMINI_API_KEY) {
+  //   try {
+  //     const { GoogleGenerativeAI } = require('@google/generative-ai');
+  //     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  //     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  //     const result = await model.generateContent('Hello - API test');
+  //     console.log('[Startup] ✓ Gemini API connection verified');
+  //   } catch (err) {
+  //     console.error('[Startup] ✗ Gemini API test failed:', err.message);
+  //     console.error('[Startup]   Check your GEMINI_API_KEY - it may be invalid or expired');
+  //   }
+  // }
 });
 
 module.exports = app;
