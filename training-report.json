@@ -1,0 +1,168 @@
+[
+  {
+    "filename": "202610000475210_Policy_118212052.pdf",
+    "textLength": 20632,
+    "hasPolicyNumber": true,
+    "hasVehicleReg": true,
+    "hasPhone": false,
+    "hasEmail": true,
+    "hasPremium": true,
+    "hasSumInsured": true,
+    "insurerMentions": [
+      "New India",
+      "National"
+    ],
+    "possibleNames": [],
+    "possiblePolicyNumbers": [
+      "2026100004752",
+      "00070000003500000",
+      "00070000003500000"
+    ]
+  },
+  {
+    "filename": "Bitha Airport_CAR.pdf",
+    "textLength": 13263,
+    "hasPolicyNumber": true,
+    "hasVehicleReg": false,
+    "hasPhone": true,
+    "hasEmail": true,
+    "hasPremium": true,
+    "hasSumInsured": true,
+    "insurerMentions": [
+      "Bajaj Allianz"
+    ],
+    "possibleNames": [],
+    "possiblePolicyNumbers": [
+      "8080945060",
+      "8080945060",
+      "09793313337"
+    ]
+  },
+  {
+    "filename": "Bombay Trasport company (Fire).pdf",
+    "textLength": 59884,
+    "hasPolicyNumber": true,
+    "hasVehicleReg": false,
+    "hasPhone": true,
+    "hasEmail": true,
+    "hasPremium": true,
+    "hasSumInsured": true,
+    "insurerMentions": [
+      "New India",
+      "National"
+    ],
+    "possibleNames": [],
+    "possiblePolicyNumbers": [
+      "42010011258700000070",
+      "05122219897",
+      "42010011258700000070",
+      "9793313337",
+      "42010081250000001984"
+    ]
+  },
+  {
+    "filename": "INSURANCE 4329.pdf",
+    "textLength": 72898,
+    "hasPolicyNumber": true,
+    "hasVehicleReg": true,
+    "hasPhone": true,
+    "hasEmail": true,
+    "hasPremium": true,
+    "hasSumInsured": true,
+    "insurerMentions": [
+      "TATA AIG",
+      "SBI General"
+    ],
+    "possibleNames": [],
+    "possiblePolicyNumbers": [
+      "9044818311",
+      "0000000042196392",
+      "0000000081525495",
+      "0000000042196392",
+      "0000000042196392"
+    ]
+  },
+  {
+    "filename": "OG-26-1302-1801-00002652 (1).pdf",
+    "textLength": 17085,
+    "hasPolicyNumber": true,
+    "hasVehicleReg": true,
+    "hasPhone": true,
+    "hasEmail": true,
+    "hasPremium": true,
+    "hasSumInsured": true,
+    "insurerMentions": [
+      "Bajaj Allianz",
+      "National"
+    ],
+    "possibleNames": [],
+    "possiblePolicyNumbers": [
+      "3423583660291",
+      "342358366029",
+      "50119652014",
+      "09793313337",
+      "09793313337"
+    ]
+  },
+  {
+    "filename": "Policy -UP78GS1006.pdf",
+    "textLength": 32557,
+    "hasPolicyNumber": true,
+    "hasVehicleReg": true,
+    "hasPhone": true,
+    "hasEmail": true,
+    "hasPremium": true,
+    "hasSumInsured": true,
+    "insurerMentions": [
+      "New India"
+    ],
+    "possibleNames": [],
+    "possiblePolicyNumbers": [
+      "42010031250300000433",
+      "42010031250300000433",
+      "05122219897",
+      "9793313337",
+      "05122305012"
+    ]
+  },
+  {
+    "filename": "UP32MN1102......pdf",
+    "textLength": 20389,
+    "hasPolicyNumber": true,
+    "hasVehicleReg": true,
+    "hasPhone": true,
+    "hasEmail": true,
+    "hasPremium": true,
+    "hasSumInsured": true,
+    "insurerMentions": [
+      "TATA AIG"
+    ],
+    "possibleNames": [],
+    "possiblePolicyNumbers": [
+      "18002671955",
+      "9136160375",
+      "18002671955",
+      "6390015500",
+      "6301284018"
+    ]
+  },
+  {
+    "filename": "godigit.pdf",
+    "textLength": 10197,
+    "hasPolicyNumber": false,
+    "hasVehicleReg": true,
+    "hasPhone": true,
+    "hasEmail": true,
+    "hasPremium": true,
+    "hasSumInsured": true,
+    "insurerMentions": [
+      "New India",
+      "Go Digit"
+    ],
+    "possibleNames": [],
+    "possiblePolicyNumbers": [
+      "6390015500",
+      "42030031220200003596"
+    ]
+  }
+]

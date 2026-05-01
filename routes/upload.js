@@ -149,6 +149,9 @@ router.post('/upload', (req, res, next) => {
       const processingTime = ((Date.now() - startTime) / 1000).toFixed(2);
       console.log(`[Upload] Processing complete in ${processingTime}s`);
       console.log(`[Upload] Digital: ${extractionResults.digitalPages} pages | OCR: ${extractionResults.ocrPages} pages`);
+      console.log(`[Upload] Extracted text sample (first 1000 chars):`);
+      console.log(extractionResults.combinedText?.substring(0, 1000));
+      console.log(`[Upload] ... (total ${extractionResults.combinedText?.length} chars)`);
 
       // ---- Process Extract with LLM (Structured Data) ----
       let structuredData = null;
@@ -157,14 +160,19 @@ router.post('/upload', (req, res, next) => {
           console.log(`[Upload] Sending ${extractionResults.combinedText.length} chars to Gemini for structured extraction...`);
           structuredData = await extractStructuredData(extractionResults.combinedText);
           
-          // Debug logging
+          // Debug logging - comprehensive
           if (structuredData) {
             if (structuredData._error) {
               console.error('[Upload] Gemini returned error:', structuredData._error);
             } else {
-              console.log('[Upload] Gemini extraction SUCCESS');
-              console.log('[Upload] Policy Number:', structuredData.policyDetails?.policyNumber || 'null');
-              console.log('[Upload] Customer Name:', structuredData.customerDetails?.customerName || 'null');
+              console.log('[Upload] ========== GEMINI EXTRACTION RESULTS ==========');
+              console.log('[Upload] Policy Details:', JSON.stringify(structuredData.policyDetails, null, 2));
+              console.log('[Upload] Customer Details:', JSON.stringify(structuredData.customerDetails, null, 2));
+              console.log('[Upload] Motor Details:', JSON.stringify(structuredData.motorDetails, null, 2));
+              console.log('[Upload] Life Details:', JSON.stringify(structuredData.lifeDetails, null, 2));
+              console.log('[Upload] Health Details:', JSON.stringify(structuredData.healthDetails, null, 2));
+              console.log('[Upload] Commercial Details:', JSON.stringify(structuredData.commercialDetails, null, 2));
+              console.log('[Upload] =================================================');
             }
           } else {
             console.warn('[Upload] Gemini returned NULL');
